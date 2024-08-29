@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  .chat-window {
+    border: 1px solid #ccc;
+    height: 400px;
+    width: 300px;
+    margin: 20px auto;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .message {
+    margin: 10px 0;
+  }
+  
+  .message.user {
+    text-align: right;
+    color: blue;
+  }
+  
+  .message.gpt {
+    text-align: left;
+    color: green;
+  }
+  
+  input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+    font-size: 14px;
+  }
+  
+  button {
+    padding: 10px;
+    font-size: 14px;
+  }
+  
