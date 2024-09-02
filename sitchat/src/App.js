@@ -1,13 +1,14 @@
-import logo from './logo.svg';
-import './App.css';
-import Chatbot from './components/Chatbot';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Main from './pages/main';
 
 function App() {
   return (
-    <div className="App">
-      <h1>Chat with GPT</h1>
-      <Chatbot />
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Main />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

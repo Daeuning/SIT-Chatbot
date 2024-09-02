@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { sendMessageToApi } from '../services/chatbotService';
 
 function Chatbot() {
   const [messages, setMessages] = useState([]);
@@ -8,13 +8,13 @@ function Chatbot() {
   const handleSend = async () => {
     if (input.trim() === '') return;
 
-    const userMessage = { role: "user", content: input };
+    const userMessage = { role: 'user', content: input };
     setMessages([...messages, userMessage]);
     setInput('');
 
     try {
-      const response = await axios.post('http://localhost:8080/api/chat', { message: input });
-      const gptMessage = { role: "gpt", content: response.data.message };
+      const gptMessageContent = await sendMessageToApi(input);
+      const gptMessage = { role: 'gpt', content: gptMessageContent };
       setMessages([...messages, userMessage, gptMessage]);
     } catch (error) {
       console.error('Error sending message:', error);
