@@ -39,21 +39,13 @@ const ChatContainer = styled.div`
 `
 
 function Main() {
-  const checkpoints = [
-    { label: "소수의 이해", active: true },
-    { label: "모듈로 산술", active: true },
-    { label: "오일러 토션트 함수", active: false },
-    { label: "공개 키 생성", active: false },
-    { label: "비밀 키 생성", active: false },
-    { label: "RSA를 통한 암호화", active: false },
-  ];
 
   return (
     <Container>
       <SideBar />
       <ChatSection>
         <ProgressBarContainer>
-          <ProgressBar checkpoints={checkpoints} />
+          <ProgressBar/>
         </ProgressBarContainer>
         <ChatContainer>
           <Chatbot />

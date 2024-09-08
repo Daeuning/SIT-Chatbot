@@ -60,7 +60,16 @@ const Label = styled.span`
   text-overflow: ellipsis;  
 `;
 
-const ProgressBar = ({ checkpoints }) => {
+const ProgressBar = () => {
+  const checkpoints = [
+    { step: 1, label: "소수의 이해", active: true },
+    { step: 2, label: "모듈로 산술", active: true },
+    { step: 3, label: "오일러 토션트 함수", active: false },
+    { step: 4, label: "공개 키 생성", active: false },
+    { step: 5, label: "비밀 키 생성", active: false },
+    { step: 6, label: "RSA를 통한 암호화", active: false },
+  ];
+
   const activeIndex = checkpoints.findLastIndex(cp => cp.active);
   const progressPercentage = (100 / (checkpoints.length - 1)) * activeIndex;
 

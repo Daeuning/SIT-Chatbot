@@ -24,7 +24,7 @@ app.post('/api/chat', async (req, res) => {
         { role: "system", "content": "사용자가 알기 쉽게 마크다운 형식으로 답변을 정리해서 보내줘"},
         { role: 'user', content: userPrompt }
       ],
-      max_tokens: 3250
+      max_tokens: 800
     });
     const gptResponse = response.choices[0].message.content;
     console.log('GPT Response:', gptResponse);
@@ -36,9 +36,10 @@ app.post('/api/chat', async (req, res) => {
 });
 
 app.post('/api/evaluate', async (req, res) => {
-  const { userMessage, gptMessage } = req.body; // 사용자 메시지와 GPT 메시지 추출
+  const { userMessage, gptMessage, checkpoints } = req.body; 
   console.log('Evaluating Message:', userMessage);
   console.log('GPT Message:', gptMessage);
+  console.log('Checkpoints:', checkpoints);
   try {
     if (!userMessage || !gptMessage) {
       return res.status(400).send('Invalid request: userMessage and gptMessage are required.');
@@ -46,11 +47,18 @@ app.post('/api/evaluate', async (req, res) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-4',
       messages: [
-        { role: "system", "content": "너는 사용자가 질문한 " + userMessage + "와 GPT가 답변한" + gptMessage + "를 보고, 사용자 질문에 대한 GPT의 답변의 진위여부를 판단하고, 적절하다고 판단되면 true를 반환하고, 적절하지 않다고 생각되면 false를 반환해줘"},
+        { role: "system", content: `답변은 숫자 또는 'false'만 반환해야해`},
+        { role: "system", content: `1. 만약 질문과 답변이 적절하지 않거나, RSA 암호화와 관련이 없는 경우, false라는 단어만 반환해.`},
+        { role: "system", content: `2. RSA 암호화의 단계와 관련된 질문/답변이 적절하다고 판단될 경우, 0을 반환해`},
+        { role: "system", content: `3. 사용자가 소수의 곱을 요청하고 gpt가 그 값을 계산한 답변이 적절하다고 판단될 경우, 1을 반환해`},
+        { role: "system", content: `4. 오일러 토션트 함수과 관련된 질문/답변이 적절하다고 판단될 경우 2를 반환해`},
+        { role: "system", content: `5. RSA 암호화에서 공개 키와 관련된 질문/답변이 적절하다고 판단될 경우 3을 반환해 단, 수학에서 최대공약수인 gcd와 관련된 내용이 없을 경우 false라는 단어만 반환해`},
+        { role: "system", content: `6. RSA 암호화에서 비밀 키와 관련된 질문/답변이 적절하다고 판단될 경우 4를 반환해 단, 유클리드 알고리즘과 관련된 내용이나 mod와 관련된 내용이 없을 경우 false라는 단어만 반환해`},
+        { role: "system", content: `7. 사용자 질문에 어떤 문자를 주고, RSA를 통해 암호화를 진행하는 질문/답변이 적절하다고 판단될 경우 5를 반환해`},
         { role: 'user', content: userMessage },
         { role: 'assistant', content: gptMessage }
       ],
-      max_tokens: 3250
+      max_tokens: 800
     });
     const evaluationResponse = response.choices[0].message.content;
     console.log('Evaluation Response:', evaluationResponse);
