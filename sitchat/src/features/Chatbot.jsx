@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown'; 
-import { sendMessageToApi } from '../services/chatbotService';
+import { sendMessageToApi } from '../services/chatbotService.js';
 import { sendEvaluationToApi } from '../services/evaluateService';
 import DialogBox from '../components/textBox/DialogBox.jsx'; 
 
@@ -78,13 +78,24 @@ function Chatbot() {
     if (input.trim() === '') return;
   
     const userMessage = { role: 'user', content: input };
-    setMessages([...messages, userMessage]);
+    let updatedMessages = [...messages, userMessage]; 
+  
+    if (updatedMessages.length > 5) {
+      updatedMessages = updatedMessages.slice(-5);  
+    }
+  
+    setMessages(updatedMessages);
     setInput('');
   
     try {
-      const gptMessageContent = await sendMessageToApi(input);
-      const gptMessage = { role: 'gpt', content: gptMessageContent };
-      const updatedMessages = [...messages, userMessage, gptMessage];
+      const gptMessageContent = await sendMessageToApi(input, updatedMessages); 
+      const gptMessage = { role: 'assistant', content: gptMessageContent };
+      updatedMessages = [...updatedMessages, gptMessage];
+  
+      if (updatedMessages.length > 5) {
+        updatedMessages = updatedMessages.slice(-5);
+      }
+  
       setMessages(updatedMessages);
   
       const evaluationResponse = await sendEvaluationToApi(userMessage, gptMessage);
@@ -92,7 +103,8 @@ function Chatbot() {
     } catch (error) {
       console.error('Error sending message:', error);
     }
-  };
+  };  
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {

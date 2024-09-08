@@ -16,24 +16,31 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/chat', async (req, res) => {  
   const userPrompt = req.body.message;  
+  const previousMessages = req.body.history || [];  
   console.log('User Message:', userPrompt);
+  console.log('Previous Messages:', previousMessages);
+
   try {
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: "system", "content": "사용자가 알기 쉽게 마크다운 형식으로 답변을 정리해서 보내줘"},
+        { role: "system", content: "사용자가 알기 쉽게 마크다운 형식으로 답변을 정리해서 보내줘"},
+        ...previousMessages,  // 이전 메시지를 그대로 추가
         { role: 'user', content: userPrompt }
       ],
       max_tokens: 800
     });
+    
     const gptResponse = response.choices[0].message.content;
     console.log('GPT Response:', gptResponse);
-    res.json({ message: gptResponse }); 
+    res.json({ message: gptResponse });
   } catch (error) {
     console.error('Error generating response:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 
 app.post('/api/evaluate', async (req, res) => {
   const { userMessage, gptMessage, checkpoints } = req.body; 
