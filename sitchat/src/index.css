@@ -12,3 +12,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.material-symbols-outlined.md-dark_green { color: #486055; }
+.material-symbols-outlined.md-white { color: #fff; }
+.material-symbols-outlined.md-18 { font-size: 18px; }
+.material-symbols-outlined.md-24 { font-size: 24px; }
+.material-symbols-outlined.md-28 { font-size: 28px; }
+.material-symbols-outlined.md-30 { font-size: 30px; }

@@ -6,42 +6,52 @@ import { sendMessageToApi, sendEvaluationToApi } from '../services/chatbotServic
 const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center; 
+  justify-content: center;
   width: 100%;
   height: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
 `;
 
 const MessagesContainer = styled.div`
   flex: 1;
   padding: 20px;
   overflow-y: auto;
-  background-color: #f9f9f9;
 `;
 
 const InputContainer = styled.div`
   display: flex;
-  padding: 10px;
-  border-top: 1px solid #ccc;
-  background-color: #fff;
+  width: 80%;
+  height: 40px;
+  align-items: center; 
+  justify-content: center;
+  padding: 5px 13px 5px 20px;
+  border-radius: 100px;
+  background-color: #F0F0F0;
 `;
 
 const Input = styled.input`
+  height: 20px;
   flex: 1;
-  padding: 10px;
   border: none;
-  border-radius: 4px;
+  background-color: #F0F0F0;
   margin-right: 10px;
   font-size: 16px;
+  font-family: 'Pretendard';
+
+  &:focus {
+    outline: none; 
+  }
 `;
 
 const Button = styled.button`
-  padding: 10px 20px;
+  display: flex;
+  align-items: center; 
+  justify-content: center;
+  width: 35px;
+  height: 35px;
   border: none;
-  border-radius: 4px;
-  background-color: #4caf50;
-  color: #fff;
-  font-size: 16px;
+  border-radius: 50%;
+  background-color: #486055;
   cursor: pointer;
 `;
 
@@ -83,9 +93,13 @@ function Chatbot() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Type a message..."
+          placeholder="메세지 입력하기"
         />
-        <Button onClick={handleSend}>Send</Button>
+        <Button onClick={handleSend}>
+        <span class="material-symbols-outlined md-white md-24">
+          arrow_upward
+        </span>
+        </Button>
       </InputContainer>
     </ChatContainer>
   );
