@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import ReactMarkdown from 'react-markdown'; 
 import { sendMessageToApi } from '../services/chatbotService.js';
-import { sendEvaluationToApi } from '../services/evaluateService';
 import DialogBox from '../components/textBox/DialogBox.jsx'; 
+import { useDispatch, useSelector } from 'react-redux';
+import { sendEvaluationToApiThunk } from '../redux/slices/evaluationSlice.js';
 
 const ChatContainer = styled.div`
   display: flex;
@@ -63,6 +63,9 @@ function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null); 
+  const dispatch = useDispatch();
+
+  const evaluationState = useSelector((state) => state.evaluation);
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
@@ -97,14 +100,12 @@ function Chatbot() {
       }
   
       setMessages(updatedMessages);
-  
-      const evaluationResponse = await sendEvaluationToApi(userMessage, gptMessage);
-      console.log('Evaluation Response:', evaluationResponse);
+
+      dispatch(sendEvaluationToApiThunk(userMessage, gptMessage));
     } catch (error) {
       console.error('Error sending message:', error);
     }
   };  
-  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {

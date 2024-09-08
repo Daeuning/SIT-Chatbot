@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';  // Redux 상태를 불러오기 위한 import
 import Chatbot from "../features/Chatbot.jsx";
 import ProgressBar from "../features/ProgressBar.jsx";
 import SideBar from "../features/SideBar.jsx";
@@ -36,16 +37,18 @@ const ChatContainer = styled.div`
   display: flex;
   width: 900px;
   height: 80%;
-`
+`;
 
 function Main() {
+
+  const evaluationState = useSelector((state) => state.evaluation);
 
   return (
     <Container>
       <SideBar />
       <ChatSection>
         <ProgressBarContainer>
-          <ProgressBar/>
+          <ProgressBar evaluationNumber={evaluationState.evaluationNumber} />
         </ProgressBarContainer>
         <ChatContainer>
           <Chatbot />
