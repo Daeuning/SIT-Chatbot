@@ -15,7 +15,8 @@ const ChatContainer = styled.div`
 const MessagesContainer = styled.div`
   flex: 1;
   padding: 20px;
-  overflow-y: auto;
+  overflow-y: auto; 
+  scrollbar-width: none;
 `;
 
 const InputContainer = styled.div`
@@ -79,6 +80,12 @@ function Chatbot() {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSend();
+    }
+  };
+
   return (
     <ChatContainer>
       <MessagesContainer>
@@ -93,12 +100,13 @@ function Chatbot() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown} 
           placeholder="메세지 입력하기"
         />
         <Button onClick={handleSend}>
-        <span class="material-symbols-outlined md-white md-24">
-          arrow_upward
-        </span>
+          <span className="material-symbols-outlined md-white md-24">
+            arrow_upward
+          </span>
         </Button>
       </InputContainer>
     </ChatContainer>

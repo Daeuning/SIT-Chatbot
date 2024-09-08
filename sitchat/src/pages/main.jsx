@@ -25,7 +25,7 @@ const ProgressBarContainer = styled.div`
   align-items: center; 
   width: 900px;  /* 너비 유지 */
   margin-top: 30px;
-  margin-bottom: 50px;
+  margin-bottom: 30px;
   border: 1px solid ${COLORS.light_grey};
   border-radius: 30px;
   padding: 35px 60px 35px 60px;
@@ -34,7 +34,8 @@ const ProgressBarContainer = styled.div`
 
 const ChatContainer = styled.div`
   display: flex;
-  width: 900px;  /* 너비 일치 */
+  width: 900px;
+  height: 80%;
 `
 
 function Main() {
