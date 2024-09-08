@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown'; 
 import { sendMessageToApi, sendEvaluationToApi } from '../services/chatbotService';
@@ -61,6 +61,17 @@ const Button = styled.button`
 function Chatbot() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const messagesEndRef = useRef(null); 
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom(); 
+  }, [messages]);
 
   const handleSend = async () => {
     if (input.trim() === '') return;
@@ -94,6 +105,7 @@ function Chatbot() {
         {messages.map((msg, index) => (
           <DialogBox key={index} text={msg.content} isUser={msg.role === 'user'} /> 
         ))}
+        <div ref={messagesEndRef} /> 
       </MessagesContainer>
       <InputContainer>
         <Input
