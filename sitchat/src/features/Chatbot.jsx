@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import ReactMarkdown from 'react-markdown'; // react-markdown을 가져옵니다
+import ReactMarkdown from 'react-markdown'; 
 import { sendMessageToApi, sendEvaluationToApi } from '../services/chatbotService';
 
 const ChatContainer = styled.div`
@@ -62,7 +62,6 @@ function Chatbot() {
       const updatedMessages = [...messages, userMessage, gptMessage];
       setMessages(updatedMessages);
   
-      // 가장 최근의 사용자 메시지와 GPT 응답을 추출해서 평가 API 호출
       const evaluationResponse = await sendEvaluationToApi(userMessage, gptMessage);
       console.log('Evaluation Response:', evaluationResponse);
     } catch (error) {
@@ -75,7 +74,6 @@ function Chatbot() {
       <MessagesContainer>
         {messages.map((msg, index) => (
           <div key={index} className={`message ${msg.role}`}>
-            {/* react-markdown을 사용해 마크다운 형식을 HTML로 변환하여 출력 */}
             <ReactMarkdown>{msg.content}</ReactMarkdown>
           </div>
         ))}

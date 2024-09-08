@@ -24,11 +24,11 @@ const ProgressBarContainer = styled.div`
   justify-content: center; 
   align-items: center; 
   width: 900px;  /* 너비 유지 */
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 50px;
   border: 1px solid ${COLORS.light_grey};
   border-radius: 30px;
-  padding: 40px 60px 20px 60px;
+  padding: 35px 60px 35px 60px;
   box-sizing: border-box;
 `;
 

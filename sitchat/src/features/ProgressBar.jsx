@@ -6,7 +6,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center; 
   justify-content: center;
-  width: 700px; /* ProgressBar의 너비를 줄이기 */
+  width: 700px; 
 `;
 
 const ProgressTrack = styled.div`
@@ -27,13 +27,13 @@ const FilledTrack = styled.div`
 `;
 
 const Marker = styled.div`
-  width: 20px;
-  height: 20px;
-  background-color: ${(props) => (props.active ? '#2e7d32' : '#fff')};
-  border: 2px solid #2e7d32;
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  box-shadow: ${(props) => props.active ? '0 0 0 4px #2e7d32 inset' : '0 0 0 1px #D9D9D9 inset'}; 
   border-radius: 50%;
   position: absolute;
-  top: -15px;  /* 조정된 위치 */
+  top: -4px;  
   left: ${(props) => props.left}%;
   transform: translateX(-50%);
   display: flex;
@@ -52,12 +52,12 @@ const Label = styled.span`
   font-size: 14px;
   text-align: center;
   position: absolute;
-  top: 25px; /* Adjust as needed */
+  top: 25px; 
   left: ${(props) => props.left}%;
   transform: translateX(-50%);
-  white-space: nowrap;  /* 텍스트가 한 줄로 나오도록 설정 */
+  white-space: nowrap;  
   overflow: hidden;
-  text-overflow: ellipsis;  /* 텍스트가 넘칠 때 줄임표 표시 */
+  text-overflow: ellipsis;  
 `;
 
 const ProgressBar = ({ checkpoints }) => {
