@@ -23,7 +23,7 @@ const ProgressBarContainer = styled.div`
   display: flex;
   justify-content: center; 
   align-items: center; 
-  width: 900px;  /* 너비 유지 */
+  width: 900px; 
   margin-top: 30px;
   margin-bottom: 30px;
   border: 1px solid ${COLORS.light_grey};

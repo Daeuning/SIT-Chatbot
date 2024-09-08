@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown'; 
 import { sendMessageToApi, sendEvaluationToApi } from '../services/chatbotService';
+import DialogBox from '../components/textBox/DialogBox.jsx'; 
 
 const ChatContainer = styled.div`
   display: flex;
@@ -14,6 +15,7 @@ const ChatContainer = styled.div`
 
 const MessagesContainer = styled.div`
   flex: 1;
+  width: 100%;
   padding: 20px;
   overflow-y: auto; 
   scrollbar-width: none;
@@ -90,9 +92,7 @@ function Chatbot() {
     <ChatContainer>
       <MessagesContainer>
         {messages.map((msg, index) => (
-          <div key={index} className={`message ${msg.role}`}>
-            <ReactMarkdown>{msg.content}</ReactMarkdown>
-          </div>
+          <DialogBox key={index} text={msg.content} isUser={msg.role === 'user'} /> 
         ))}
       </MessagesContainer>
       <InputContainer>
