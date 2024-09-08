@@ -44,9 +44,9 @@ app.post('/api/evaluate', async (req, res) => {
       return res.status(400).send('Invalid request: userMessage and gptMessage are required.');
     }
     const response = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
+      model: 'gpt-4',
       messages: [
-        { role: "system", "content": "너는 사용자가 질문한 " + userMessage + "와 GPT가 답변한" + gptMessage + "를 보고, 사용자 질문에 대한 GPT의 답변이 적절하다고 판단되면 true를 반환하고, 적절하지 않다고 생각되면 false를 반환해줘"},
+        { role: "system", "content": "너는 사용자가 질문한 " + userMessage + "와 GPT가 답변한" + gptMessage + "를 보고, 사용자 질문에 대한 GPT의 답변의 진위여부를 판단하고, 적절하다고 판단되면 true를 반환하고, 적절하지 않다고 생각되면 false를 반환해줘"},
         { role: 'user', content: userMessage },
         { role: 'assistant', content: gptMessage }
       ],

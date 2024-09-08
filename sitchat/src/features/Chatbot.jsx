@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown'; 
-import { sendMessageToApi, sendEvaluationToApi } from '../services/chatbotService';
+import { sendMessageToApi } from '../services/chatbotService';
+import { sendEvaluationToApi } from '../services/evaluateService';
 import DialogBox from '../components/textBox/DialogBox.jsx'; 
 
 const ChatContainer = styled.div`
