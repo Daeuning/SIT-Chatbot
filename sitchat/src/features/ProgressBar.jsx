@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -61,19 +61,83 @@ const Label = styled.span`
 `;
 
 const ProgressBar = ({ evaluationNumber }) => {
-
-  const checkpoints = [
-    { step: 1, label: "RSA 암호화 방법", active: evaluationNumber >= 1 },
-    { step: 2, label: "소수의 곱", active: evaluationNumber >= 2 },
-    { step: 3, label: "오일러 토션트 함수", active: evaluationNumber >= 3 },
-    { step: 4, label: "공개 키 생성", active: evaluationNumber >= 4 },
-    { step: 5, label: "비밀 키 생성", active: evaluationNumber >= 5 },
-    { step: 6, label: "RSA를 통한 암호화", active: evaluationNumber >= 6 },
+  const pointsarray = [
+    { step: 1, label: "RSA 암호화 방법", active: evaluationNumber == 1 },
+    { step: 2, label: "소수의 곱", active: evaluationNumber == 2 },
+    { step: 3, label: "오일러 토션트 함수", active: evaluationNumber == 3 },
+    { step: 4, label: "공개 키 생성", active: evaluationNumber == 4 },
+    { step: 5, label: "비밀 키 생성", active: evaluationNumber == 5 },
+    { step: 6, label: "RSA를 통한 암호화", active: evaluationNumber == 6 },
   ];
 
+  const [checkpoints, setCheckpoints] = useState([
+    { step: 0, label: "", active: false },
+    { step: 0, label: "", active: false },
+    { step: 0, label: "", active: false },
+    { step: 6, label: "RSA를 통한 암호화", active: evaluationNumber >= 6 },
+  ]);
 
-  const activeIndex = checkpoints.findLastIndex(cp => cp.active);
+  useEffect(() => {
+    const newPoint = pointsarray.find((point) => point.step === evaluationNumber);
 
+    if (newPoint) {
+      let newCheckpoints = [...checkpoints];
+
+      if (evaluationNumber === 6) {
+        const activeCheckpoints = newCheckpoints.filter((checkpoint, index) => {
+          return checkpoint.active && index !== 0 && index !== newCheckpoints.length - 1;
+        });
+  
+        newCheckpoints = [
+          newCheckpoints[0], 
+          ...activeCheckpoints,
+          newPoint, 
+        ];
+      } else {
+        
+        const activeMarkers = newCheckpoints.filter((cp) => cp.active).length;
+        const isMarkerAlreadyActive = newCheckpoints.some((cp) => cp.step === evaluationNumber);
+
+        if (!isMarkerAlreadyActive) {
+          if (activeMarkers === 0) {
+            newCheckpoints.splice(0, 1, newPoint);
+          } else if (activeMarkers === 1) {
+            newCheckpoints.splice(1, 1, newPoint);
+          } else if (activeMarkers === 2) {
+            newCheckpoints.splice(2, 1);
+            const insertIndex = newCheckpoints.findIndex(
+              (cp, index) =>
+                cp.step < evaluationNumber &&
+                newCheckpoints[index + 1] &&
+                newCheckpoints[index + 1].step > evaluationNumber
+            );
+            if (insertIndex !== -1) {
+              newCheckpoints.splice(insertIndex + 1, 0, newPoint);
+            } else {
+              newCheckpoints.push(newPoint);
+            }
+          } else if (activeMarkers === 3) {
+            const insertIndex = newCheckpoints.findIndex(
+              (cp, index) =>
+                cp.step < evaluationNumber &&
+                newCheckpoints[index + 1] &&
+                newCheckpoints[index + 1].step > evaluationNumber
+            );
+            if (insertIndex !== -1) {
+              newCheckpoints.splice(insertIndex + 1, 0, newPoint);
+            } else {
+              newCheckpoints.push(newPoint);
+            }
+          }
+        }
+      }
+
+      
+      setCheckpoints(newCheckpoints);
+    }
+  }, [evaluationNumber]);
+
+  const activeIndex = checkpoints.findLastIndex((cp) => cp.active);
 
   const progressPercentage = activeIndex === -1 ? 0 : (100 / (checkpoints.length - 1)) * activeIndex;
 
@@ -81,10 +145,7 @@ const ProgressBar = ({ evaluationNumber }) => {
     <Container>
       <LabelContainer>
         {checkpoints.map((checkpoint, index) => (
-          <Label
-            key={index}
-            left={(index / (checkpoints.length - 1)) * 100}
-          >
+          <Label key={index} left={(index / (checkpoints.length - 1)) * 100}>
             {checkpoint.label}
           </Label>
         ))}
@@ -92,11 +153,7 @@ const ProgressBar = ({ evaluationNumber }) => {
       <ProgressTrack>
         <FilledTrack width={progressPercentage} />
         {checkpoints.map((checkpoint, index) => (
-          <Marker
-            key={index}
-            active={checkpoint.active}
-            left={(index / (checkpoints.length - 1)) * 100}
-          />
+          <Marker key={index} active={checkpoint.active} left={(index / (checkpoints.length - 1)) * 100} />
         ))}
       </ProgressTrack>
     </Container>
@@ -104,3 +161,4 @@ const ProgressBar = ({ evaluationNumber }) => {
 };
 
 export default ProgressBar;
+
