@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import TaskCompletionModal from '../features/TaskCompletionModal.jsx';
+import { useDispatch } from 'react-redux';
+import { resetEvaluationNumber } from '../redux/slices/evaluationSlice.js'; 
 
 const Container = styled.div`
   display: flex;
@@ -78,6 +81,9 @@ const ProgressBar = ({ evaluationNumber }) => {
     { step: 6, label: "RSA를 통한 암호화", active: evaluationNumber >= 6 },
   ]);
 
+  const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     const newPoint = pointsarray.find((point) => point.step === evaluationNumber);
 
@@ -85,15 +91,9 @@ const ProgressBar = ({ evaluationNumber }) => {
       let newCheckpoints = [...checkpoints];
 
       if (evaluationNumber === 6) {
-        const activeCheckpoints = newCheckpoints.filter((checkpoint, index) => {
-          return checkpoint.active && index !== 0 && index !== newCheckpoints.length - 1;
-        });
-  
-        newCheckpoints = [
-          newCheckpoints[0], 
-          ...activeCheckpoints,
-          newPoint, 
-        ];
+        if (evaluationNumber === 6) {
+          setIsModalOpen(true);
+        }
       } else {
         
         const activeMarkers = newCheckpoints.filter((cp) => cp.active).length;
@@ -141,6 +141,33 @@ const ProgressBar = ({ evaluationNumber }) => {
     }
   }, [evaluationNumber]);
 
+  const handleComplete = () => {
+    const newPoint = pointsarray.find((point) => point.step === evaluationNumber);
+    
+    if (newPoint) {
+      let newCheckpoints = [...checkpoints];
+
+      const activeCheckpoints = newCheckpoints.filter((checkpoint, index) => {
+        return checkpoint.active && index !== 0 && index !== newCheckpoints.length - 1;
+      });
+
+      newCheckpoints = [
+        newCheckpoints[0], 
+        ...activeCheckpoints,
+        newPoint, 
+      ];
+
+      setCheckpoints(newCheckpoints);
+    }
+
+    setIsModalOpen(false); 
+  };
+
+  const handleContinue = () => {
+    dispatch(resetEvaluationNumber());
+    setIsModalOpen(false); 
+  };
+
   const activeIndex = checkpoints.findLastIndex((cp) => cp.active);
 
   const progressPercentage = activeIndex === -1 ? 0 : (100 / (checkpoints.length - 1)) * activeIndex;
@@ -160,6 +187,12 @@ const ProgressBar = ({ evaluationNumber }) => {
           <Marker key={index} active={checkpoint.active} left={(index / (checkpoints.length - 1)) * 100} />
         ))}
       </ProgressTrack>
+      <TaskCompletionModal 
+        isOpen={isModalOpen} 
+        onClose={handleContinue} 
+        onComplete={handleComplete} 
+        onContinue={handleContinue} 
+      />
     </Container>
   );
 };
