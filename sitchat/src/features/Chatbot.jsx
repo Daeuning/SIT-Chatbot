@@ -85,8 +85,8 @@ function Chatbot() {
     let updatedMessages = [...messages, userMessage];
     let updatedFullMessages = [...fullMessages, userMessage];
   
-    if (updatedMessages.length > 5) {
-      updatedMessages = updatedMessages.slice(-5); 
+    if (updatedMessages.length > 6) {
+      updatedMessages = updatedMessages.slice(-6); 
     }
   
     setMessages(updatedMessages);  
@@ -99,8 +99,8 @@ function Chatbot() {
       updatedMessages = [...updatedMessages, gptMessage];
       updatedFullMessages = [...updatedFullMessages, gptMessage];
   
-      if (updatedMessages.length > 5) {
-        updatedMessages = updatedMessages.slice(-5); 
+      if (updatedMessages.length > 6) {
+        updatedMessages = updatedMessages.slice(-6); 
       }
   
       setMessages(updatedMessages);  
