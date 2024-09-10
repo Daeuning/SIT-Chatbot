@@ -104,7 +104,7 @@ function Chatbot() {
       const evaluationNumber = await dispatch(sendEvaluationToApiThunk(userMessage, gptMessage));
 
       console.log('isValue:', evaluationNumber);
-      const isStep = evaluationNumber === 'false' ? false : true;
+      const isStep = evaluationNumber === 'false' ? false : evaluationNumber;
 
       updatedFullMessages = updatedFullMessages.map((msg, index) => {
         if (index >= updatedFullMessages.length - 1) {

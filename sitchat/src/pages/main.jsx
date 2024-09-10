@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';  // Redux 상태를 불러오기 위한 import
+import { useSelector } from 'react-redux'; 
 import Chatbot from "../features/Chatbot.jsx";
 import ProgressBar from "../features/ProgressBar.jsx";
 import SideBar from "../features/SideBar.jsx";
