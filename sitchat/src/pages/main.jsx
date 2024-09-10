@@ -51,7 +51,7 @@ function Main() {
           <ProgressBar evaluationNumber={evaluationState.evaluationNumber} />
         </ProgressBarContainer>
         <ChatContainer>
-          <Chatbot />
+          <Chatbot/>
         </ChatContainer>
       </ChatSection>
     </Container>

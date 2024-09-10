@@ -102,7 +102,12 @@ const ProgressBar = ({ evaluationNumber }) => {
           if (activeMarkers === 0) {
             newCheckpoints.splice(0, 1, newPoint);
           } else if (activeMarkers === 1) {
-            newCheckpoints.splice(1, 1, newPoint);
+            if (newCheckpoints[0].step > newPoint.step) {
+              newCheckpoints.splice(1, 1); 
+              newCheckpoints.splice(0, 0, newPoint); 
+            } else {
+              newCheckpoints.splice(1, 1, newPoint); 
+            }
           } else if (activeMarkers === 2) {
             newCheckpoints.splice(2, 1);
             const insertIndex = newCheckpoints.findIndex(

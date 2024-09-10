@@ -47,7 +47,9 @@ export const sendEvaluationToApiThunk = (userMessage, gptMessage) => async (disp
     const evaluation = await sendEvaluationToApi(userMessage, gptMessage);
 
     dispatch(evaluationReceived(evaluation));
+    return evaluation;
   } catch (error) {
     dispatch(evaluationFailed(error.toString()));
+    return null; 
   }
 };

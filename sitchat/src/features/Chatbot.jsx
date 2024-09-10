@@ -66,8 +66,6 @@ function Chatbot() {
   const messagesEndRef = useRef(null); 
   const dispatch = useDispatch();
 
-  const evaluationState = useSelector((state) => state.evaluation);
-
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -81,12 +79,12 @@ function Chatbot() {
   const handleSend = async () => {
     if (input.trim() === '') return;
   
-    const userMessage = { role: 'user', content: input };
+    const userMessage = { role: 'user', content: input, isStep: null };
     let updatedMessages = [...messages, userMessage];
     let updatedFullMessages = [...fullMessages, userMessage];
   
-    if (updatedMessages.length > 6) {
-      updatedMessages = updatedMessages.slice(-6); 
+    if (updatedMessages.length > 10) {
+      updatedMessages = updatedMessages.slice(-10); 
     }
   
     setMessages(updatedMessages);  
@@ -95,18 +93,29 @@ function Chatbot() {
   
     try {
       const gptMessageContent = await sendMessageToApi(input, updatedMessages); 
-      const gptMessage = { role: 'assistant', content: gptMessageContent };
+      const gptMessage = { role: 'assistant', content: gptMessageContent, isStep: null };
       updatedMessages = [...updatedMessages, gptMessage];
       updatedFullMessages = [...updatedFullMessages, gptMessage];
   
-      if (updatedMessages.length > 6) {
-        updatedMessages = updatedMessages.slice(-6); 
+      if (updatedMessages.length > 10) {
+        updatedMessages = updatedMessages.slice(-10); 
       }
   
+      const evaluationNumber = await dispatch(sendEvaluationToApiThunk(userMessage, gptMessage));
+
+      console.log('isValue:', evaluationNumber);
+      const isStep = evaluationNumber === 'false' ? false : true;
+
+      updatedFullMessages = updatedFullMessages.map((msg, index) => {
+        if (index >= updatedFullMessages.length - 1) {
+          return { ...msg, isStep: isStep }; 
+        }
+        return msg; 
+      });
+
       setMessages(updatedMessages);  
       setFullMessages(updatedFullMessages);  
 
-      dispatch(sendEvaluationToApiThunk(userMessage, gptMessage));
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -122,7 +131,12 @@ function Chatbot() {
     <ChatContainer>
       <MessagesContainer>
         {fullMessages.map((msg, index) => (
-          <DialogBox key={index} text={msg.content} isUser={msg.role === 'user'} /> 
+          <DialogBox 
+            key={index} 
+            text={msg.content} 
+            isUser={msg.role === 'user'} 
+            isStep={msg.isStep} 
+          /> 
         ))}
         <div ref={messagesEndRef} /> 
       </MessagesContainer>
