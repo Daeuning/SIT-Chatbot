@@ -60,7 +60,8 @@ const Button = styled.button`
 `;
 
 function Chatbot() {
-  const [messages, setMessages] = useState([]);
+  const [messages, setMessages] = useState([]); 
+  const [fullMessages, setFullMessages] = useState([]); 
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null); 
   const dispatch = useDispatch();
@@ -75,31 +76,35 @@ function Chatbot() {
 
   useEffect(() => {
     scrollToBottom(); 
-  }, [messages]);
+  }, [fullMessages]);
 
   const handleSend = async () => {
     if (input.trim() === '') return;
   
     const userMessage = { role: 'user', content: input };
-    let updatedMessages = [...messages, userMessage]; 
+    let updatedMessages = [...messages, userMessage];
+    let updatedFullMessages = [...fullMessages, userMessage];
   
     if (updatedMessages.length > 5) {
-      updatedMessages = updatedMessages.slice(-5);  
+      updatedMessages = updatedMessages.slice(-5); 
     }
   
-    setMessages(updatedMessages);
+    setMessages(updatedMessages);  
+    setFullMessages(updatedFullMessages);  
     setInput('');
   
     try {
       const gptMessageContent = await sendMessageToApi(input, updatedMessages); 
       const gptMessage = { role: 'assistant', content: gptMessageContent };
       updatedMessages = [...updatedMessages, gptMessage];
+      updatedFullMessages = [...updatedFullMessages, gptMessage];
   
       if (updatedMessages.length > 5) {
-        updatedMessages = updatedMessages.slice(-5);
+        updatedMessages = updatedMessages.slice(-5); 
       }
   
-      setMessages(updatedMessages);
+      setMessages(updatedMessages);  
+      setFullMessages(updatedFullMessages);  
 
       dispatch(sendEvaluationToApiThunk(userMessage, gptMessage));
     } catch (error) {
@@ -116,7 +121,7 @@ function Chatbot() {
   return (
     <ChatContainer>
       <MessagesContainer>
-        {messages.map((msg, index) => (
+        {fullMessages.map((msg, index) => (
           <DialogBox key={index} text={msg.content} isUser={msg.role === 'user'} /> 
         ))}
         <div ref={messagesEndRef} /> 
