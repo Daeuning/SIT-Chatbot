@@ -61,7 +61,10 @@ app.post('/api/evaluate', async (req, res) => {
         { role: "system", content: `4. 오일러 토션트 함수과 관련된 질문/답변이 적절하다고 판단될 경우 3를 반환해`},
         { role: "system", content: `5. RSA 암호화에서 공개 키와 관련된 질문/답변이 적절하다고 판단될 경우 4을 반환해 단, 수학에서 최대공약수인 gcd와 관련된 내용이 없을 경우 false라는 단어만 반환해`},
         { role: "system", content: `6. RSA 암호화에서 비밀 키와 관련된 질문/답변이 적절하다고 판단될 경우 5를 반환해 단, 유클리드 알고리즘과 관련된 내용이나 mod와 관련된 내용이 없을 경우 false라는 단어만 반환해`},
-        { role: "system", content: `7. 사용자 질문에 어떤 문자를 주고, RSA를 통해 암호화를 진행하는 질문/답변이 적절하다고 판단될 경우 6을 반환해`},
+        { role: "system", content: `7. 다음 조건을 만족할 경우 6을 반환해.
+          1) 사용자 질문에 공개 키와 개인 키에 관한 내용이 포함되어 있어야해
+          2) 사용자 질문에 어떤 문자를 주고 RSA를 통해 암호화를 해달라는 내용이 포함되어야 있어야해
+          3) GPT의 답변에 실제로 문자를 암호화한 과정이 포함되어 있어야 해.`},
         { role: 'user', content: userMessage },
         { role: 'assistant', content: gptMessage }
       ],

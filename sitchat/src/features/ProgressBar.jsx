@@ -132,7 +132,6 @@ const ProgressBar = ({ evaluationNumber }) => {
         }
       }
 
-      
       setCheckpoints(newCheckpoints);
     }
   }, [evaluationNumber]);
