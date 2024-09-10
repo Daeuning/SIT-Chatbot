@@ -49,12 +49,12 @@ const Label = styled.div`
 `;
 
 const checkpoints = [
-    { step: 1, label: "소수의 이해", active: true },
-    { step: 2, label: "모듈로 산술", active: true },
-    { step: 3, label: "오일러 토션트 함수", active: false },
-    { step: 4, label: "공개 키 생성", active: false },
-    { step: 5, label: "비밀 키 생성", active: false },
-    { step: 6, label: "RSA를 통한 암호화", active: false },
+    { step: 1, label: "RSA 암호화 방법", active: true },
+    { step: 2, label: "소수의 곱", active: true },
+    { step: 3, label: "오일러 토션트 함수", active: true },
+    { step: 4, label: "공개 키 생성", active: true },
+    { step: 5, label: "비밀 키 생성", active: true },
+    { step: 6, label: "RSA를 통한 암호화", active: true },
 ];
 
 const DialogBox = ({ text, isUser, isStep }) => {

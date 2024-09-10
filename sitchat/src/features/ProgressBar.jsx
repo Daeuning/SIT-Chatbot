@@ -57,7 +57,8 @@ const Label = styled.span`
   transform: translateX(-50%);
   white-space: nowrap;  
   overflow: hidden;
-  text-overflow: ellipsis;  
+  text-overflow: ellipsis;
+  color: ${(props) => props.active ? '#373D47' : '#9E9E9F'};  /* Update label color based on active state */
 `;
 
 const ProgressBar = ({ evaluationNumber }) => {
@@ -101,6 +102,7 @@ const ProgressBar = ({ evaluationNumber }) => {
         if (!isMarkerAlreadyActive) {
           if (activeMarkers === 0) {
             newCheckpoints.splice(0, 1, newPoint);
+
           } else if (activeMarkers === 1) {
             if (newCheckpoints[0].step > newPoint.step) {
               newCheckpoints.splice(1, 1); 
@@ -108,30 +110,28 @@ const ProgressBar = ({ evaluationNumber }) => {
             } else {
               newCheckpoints.splice(1, 1, newPoint); 
             }
+
           } else if (activeMarkers === 2) {
             newCheckpoints.splice(2, 1);
             const insertIndex = newCheckpoints.findIndex(
-              (cp, index) =>
-                cp.step < evaluationNumber &&
-                newCheckpoints[index + 1] &&
-                newCheckpoints[index + 1].step > evaluationNumber
+              (cp) => cp.step > evaluationNumber  
             );
+          
             if (insertIndex !== -1) {
-              newCheckpoints.splice(insertIndex + 1, 0, newPoint);
+              newCheckpoints.splice(insertIndex, 0, newPoint);  
             } else {
-              newCheckpoints.push(newPoint);
+              newCheckpoints.push(newPoint);  
             }
+            
           } else if (activeMarkers === 3) {
             const insertIndex = newCheckpoints.findIndex(
-              (cp, index) =>
-                cp.step < evaluationNumber &&
-                newCheckpoints[index + 1] &&
-                newCheckpoints[index + 1].step > evaluationNumber
+              (cp) => cp.step > evaluationNumber  
             );
+          
             if (insertIndex !== -1) {
-              newCheckpoints.splice(insertIndex + 1, 0, newPoint);
+              newCheckpoints.splice(insertIndex, 0, newPoint);  
             } else {
-              newCheckpoints.push(newPoint);
+              newCheckpoints.push(newPoint);  
             }
           }
         }
@@ -149,7 +149,7 @@ const ProgressBar = ({ evaluationNumber }) => {
     <Container>
       <LabelContainer>
         {checkpoints.map((checkpoint, index) => (
-          <Label key={index} left={(index / (checkpoints.length - 1)) * 100}>
+          <Label key={index} left={(index / (checkpoints.length - 1)) * 100} active={checkpoint.active}>
             {checkpoint.label}
           </Label>
         ))}
@@ -165,4 +165,3 @@ const ProgressBar = ({ evaluationNumber }) => {
 };
 
 export default ProgressBar;
-
