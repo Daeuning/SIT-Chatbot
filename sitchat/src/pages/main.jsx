@@ -20,6 +20,7 @@ const ChatSection = styled.div`
   flex: 1;
 `;
 
+/*
 const ProgressBarContainer = styled.div`
   display: flex;
   justify-content: center; 
@@ -32,11 +33,12 @@ const ProgressBarContainer = styled.div`
   padding: 35px 60px 35px 60px;
   box-sizing: border-box;
 `;
+*/
 
 const ChatContainer = styled.div`
   display: flex;
   width: 900px;
-  height: 80%;
+  height: 95%;
 `;
 
 function Main() {
@@ -47,9 +49,11 @@ function Main() {
     <Container>
       <SideBar />
       <ChatSection>
+      {/*}
         <ProgressBarContainer>
           <ProgressBar evaluationNumber={evaluationState.evaluationNumber} />
         </ProgressBarContainer>
+        */}
         <ChatContainer>
           <Chatbot/>
         </ChatContainer>

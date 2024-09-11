@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import ReactMarkdown from 'react-markdown'; 
 import { COLORS } from "../../styles/colors.jsx";
@@ -16,23 +16,9 @@ const MessageBubble = styled.div`
     padding: 1px 20px;
     margin: 10px 0px;
     border-radius: ${(props) => (props.isUser ? '30px 30px 0px 30px' : '0px 30px 30px 30px')};
-    background-color: ${(props) => {
-        if (!props.isUser && props.isStep) {
-            return 'rgba(121, 173, 147, 0.1)';
-        } else if (!props.isUser && !props.isStep) {
-            return '#fff';
-        }
-        return '#f5f5f5';
-    }};
-    border: ${(props) => (!props.isUser && !props.isStep ? '1px solid rgba(217, 217, 217, 0.5)' : 'none')};
-    color: ${(props) => {
-        if (!props.isUser && props.isStep) {
-            return '#0D6634';
-        } else if (!props.isUser && !props.isStep) {
-            return '#373D47';
-        }
-        return '#373D47';
-    }};
+    background-color: ${(props) => (props.isUser ? '#f5f5f5' : '#fff')};
+    border: ${(props) => (!props.isUser ? '1px solid rgba(217, 217, 217, 0.5)' : 'none')};
+    color: ${(props) => (props.isUser ? '#373D47' : '#373D47')};
     word-wrap: break-word;
     text-align: ${(props) => (props.isUser ? 'right' : 'left')};
 `;
@@ -57,26 +43,11 @@ const checkpoints = [
     { step: 6, label: "RSA를 통한 암호화", active: true },
 ];
 
-const DialogBox = ({ text, isUser, isStep }) => {
-    const matchingCheckpoint = checkpoints.find((checkpoint) => {
-        const stepToCompare = typeof isStep === 'string' ? parseInt(isStep, 10) : isStep;
-        return checkpoint.step === stepToCompare;
-    });
-
-    useEffect(() => {
-        console.log('isStep value:', isStep);
-    }, [isStep]);
-
+const DialogBox = ({ text, isUser}) => {
     return (
         <Container isUser={isUser}>
             <div>
-                {!isUser && matchingCheckpoint && (
-                    <LabelContainer>
-                        <span class="material-symbols-outlined md-22 md-dark_green">check_circle</span>
-                        <Label>{matchingCheckpoint.label}</Label>
-                    </LabelContainer>
-                )}
-                <MessageBubble isUser={isUser} isStep={isStep}>
+                <MessageBubble isUser={isUser}>
                     <ReactMarkdown>{text}</ReactMarkdown>
                 </MessageBubble>
             </div>

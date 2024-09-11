@@ -135,7 +135,6 @@ function Chatbot() {
             key={index} 
             text={msg.content} 
             isUser={msg.role === 'user'} 
-            isStep={msg.isStep} 
           /> 
         ))}
         <div ref={messagesEndRef} /> 
