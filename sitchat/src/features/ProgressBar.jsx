@@ -133,7 +133,18 @@ const ProgressBar = ({ evaluationNumber }) => {
             } else {
               newCheckpoints.push(newPoint);  
             }
+          } else if (activeMarkers === 4) {
+            const insertIndex = newCheckpoints.findIndex(
+              (cp) => cp.step > evaluationNumber  
+            );
+          
+            if (insertIndex !== -1) {
+              newCheckpoints.splice(insertIndex, 0, newPoint);  
+            } else {
+              newCheckpoints.push(newPoint);  
+            }
           }
+          
         }
       }
 
